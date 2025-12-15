@@ -8,6 +8,11 @@
     box-sizing: border-box;
 }
 
+body {
+   font-family: "Montserrat", sans-serif;
+}
+
+
 
 .main-page {
   position: relative;
@@ -35,4 +40,5 @@
   width: 80%;
   margin: 0 auto;
   padding: 40px 16px 64px;
+  /* background-color: aquamarine; */
 }
