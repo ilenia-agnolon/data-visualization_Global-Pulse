@@ -10,8 +10,24 @@
 
 body {
    font-family: "Montserrat", sans-serif;
+   color:#d1d5db;
 }
 
+
+/* 
+
+**font
+font-family: "Montserrat Alternates", sans-serif;
+
+_________________
+**colors
+orange:  #F6A823;
+
+light grey: #d1d5db;
+
+grey: #808797;
+_________________
+*/
 
 
 .main-page {
@@ -41,4 +57,17 @@ body {
   margin: 0 auto;
   padding: 40px 16px 64px;
   /* background-color: aquamarine; */
+}
+
+
+/* reusable txt */
+h3{
+    font-size: 2rem;
+    /* font-family: "Montserrat Alternates", sans-serif; */
+}
+
+h4{
+    font-size: 1rem;
+    font-weight: 300;
+    color: #808797
 }
