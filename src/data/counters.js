@@ -1,5 +1,3 @@
-// src/data/counters.js
-
 export const sections = [
   // 🧬 HUMAN HYPER PULSE
   {
