@@ -1,133 +1,167 @@
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
-export function RainVisualization({
-  rate, // events per secons
-  color = "hsl(189, 100%, 55%)", // light blue
-  height = 40,
-}) {
+// 👉 IMPORTANT: keep this export name because CuriosityCard imports { RainVisualization }
+export function RainVisualization({ rate, height = 50 }) {
   const canvasRef = useRef(null);
-  const dropsRef = useRef([]);
-  const animationRef = useRef(null);
+  const rafRef = useRef(null);
 
-  // (max ~25 drops)
-  const normalizedDensity = useMemo(() => {
-    const safeRate = Math.max(rate || 0, 0.1);
-    const logRate = Math.log10(safeRate + 1);
-    return Math.min(Math.max(logRate * 4, 4), 25);
+  // Particle storage
+  const particlesRef = useRef([]);
+  const lastTsRef = useRef(0);
+  const spawnAccRef = useRef(0);
+
+  // 👉 Color palette: blue, orange, white (you can tweak probabilities below)
+  const COLORS = useMemo(
+    () => [
+      { r: 64, g: 214, b: 255, aMin: 0.55, aMax: 0.95 }, // cyan/blue
+      { r: 246, g: 168, b: 35, aMin: 0.45, aMax: 0.9 },  // orange
+      { r: 255, g: 255, b: 255, aMin: 0.35, aMax: 0.85 } // white
+    ],
+    []
+  );
+
+  // 👉 Decide how many drops per second we can actually spawn (performance-safe)
+  // For low rates (like 1.8/sec) we keep it 1:1.
+  // For huge rates we cap spawn and treat each drop as a "bundle" of events.
+  const spawnModel = useMemo(() => {
+    const r = Math.max(Number(rate) || 0, 0);
+
+    // 👉 1:1 spawn for small rates (so 1.8/sec ≈ 2 drops/sec)
+    if (r <= 20) {
+      return { dropsPerSecond: r, eventsPerDrop: 1 };
+    }
+
+    // 👉 Medium rates: still fairly proportional, but we start compressing
+    if (r <= 500) {
+      const dropsPerSecond = 20 + (r - 20) * 0.12; // 20..~77
+      return { dropsPerSecond, eventsPerDrop: r / dropsPerSecond };
+    }
+
+    // 👉 Huge rates: strong compression (otherwise you'd spawn millions/sec)
+    const dropsPerSecond = 90; // hard cap for performance
+    return { dropsPerSecond, eventsPerDrop: r / dropsPerSecond };
   }, [rate]);
+
+  // 👉 Small helper: pick a color with weighted probability (blue > orange > white)
+  const pickColor = () => {
+    const t = Math.random();
+    if (t < 0.6) return COLORS[0];      // 60% blue
+    if (t < 0.85) return COLORS[1];     // 25% orange
+    return COLORS[2];                  // 15% white
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    const getWidth = () =>
-      canvas.clientWidth || canvas.offsetWidth || 260;
-
-    const getHeight = () =>
-      canvas.clientHeight || canvas.offsetHeight || height;
-
+    // HiDPI resize
     const resize = () => {
-      const w = getWidth();
-      const h = getHeight();
+      const w = canvas.clientWidth || 300;
+      const h = canvas.clientHeight || height;
 
-      
-      canvas.width = w * 2;
-      canvas.height = h * 2;
-
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(2, 2);
+      const dpr = Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     resize();
     window.addEventListener("resize", resize);
 
-    const createDrop = () => ({
-      x: Math.random() * getWidth(),
-      y: Math.random() * getHeight(),
-      // speed
-      speed: 1.5 + Math.random() * 3,
-      opacity: 0.3 + Math.random() * 0.5,
-      length: 4 + Math.random() * 8,
-    });
+    // 👉 Particle factory: short "dash" like the screenshot (not circles)
+    const createDrop = (w, h) => {
+      const c = pickColor();
+      const alpha = c.aMin + Math.random() * (c.aMax - c.aMin);
 
-    const initDrops = () => {
-      dropsRef.current = [];
-      for (let i = 0; i < normalizedDensity; i++) {
-        dropsRef.current.push(createDrop());
-      }
+      // 👉 Speed is in px/sec, not px/frame (consistent on all FPS)
+      // Keep it readable: slower baseline, slightly faster for higher rates
+      const rateFactor = Math.min(Math.log10((Number(rate) || 0) + 1), 6); // 0..6
+      const baseSpeed = 25 + rateFactor * 10; // 25..85 px/sec
+
+      // Dash length (a little variation)
+      const dashLen = 3 + Math.random() * 8; // px
+
+      return {
+        x: Math.random() * w,
+        y: -dashLen - Math.random() * h,
+        vy: baseSpeed * (0.75 + Math.random() * 0.8), // px/sec
+        len: dashLen,
+        a: alpha,
+        color: c
+      };
     };
 
-    initDrops();
+    const step = (ts) => {
+      const w = canvas.clientWidth || 300;
+      const h = canvas.clientHeight || height;
 
-    const animate = () => {
-      const w = getWidth();
-      const h = getHeight();
+      // dt in seconds
+      const last = lastTsRef.current || ts;
+      const dt = Math.min((ts - last) / 1000, 0.05);
+      lastTsRef.current = ts;
 
+      // Clear frame
       ctx.clearRect(0, 0, w, h);
 
-      // hsl(...) hsla(...)
-      const hslMatch = color.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%/);
-      const hVal = hslMatch ? hslMatch[1] : "189";
-      const sVal = hslMatch ? hslMatch[2] : "100";
-      const lVal = hslMatch ? hslMatch[3] : "55";
+      // 👉 Spawn logic: "drops per second" based on your rate
+      // This is the main fix: 1.8/sec will spawn ~2 drops per second.
+      spawnAccRef.current += spawnModel.dropsPerSecond * dt;
 
-      dropsRef.current.forEach((drop) => {
+      // Spawn integer amount, keep fractional remainder
+      const spawnCount = Math.floor(spawnAccRef.current);
+      spawnAccRef.current -= spawnCount;
+
+      for (let i = 0; i < spawnCount; i++) {
+        particlesRef.current.push(createDrop(w, h));
+      }
+
+      // 👉 Update & draw
+      const next = [];
+      for (const p of particlesRef.current) {
+        p.y += p.vy * dt;
+
+        // Draw a vertical dash (linelet)
         ctx.beginPath();
-        ctx.moveTo(drop.x, drop.y);
-        ctx.lineTo(drop.x, drop.y + drop.length);
-        ctx.strokeStyle = `hsla(${hVal}, ${sVal}%, ${lVal}%, ${drop.opacity})`;
-        ctx.lineWidth = 1.5;
-        ctx.lineCap = "round";
-        ctx.shadowColor = `hsla(${hVal}, ${sVal}%, ${lVal}%, 0.6)`;
-        ctx.shadowBlur = 4;
+        ctx.strokeStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${p.a})`;
+        ctx.lineWidth = 2;
+        ctx.shadowColor = ctx.strokeStyle;
+        ctx.shadowBlur = 8;
+
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x, p.y + p.len);
         ctx.stroke();
 
-        // update position
-        drop.y += drop.speed;
-
-        // respawn from above when it exits
-        if (drop.y > h) {
-          drop.y = -drop.length;
-          drop.x = Math.random() * w;
-          drop.speed = 1.5 + Math.random() * 3;
-          drop.opacity = 0.3 + Math.random() * 0.5;
-        }
-      });
-
-      // keeps drops number consistent with density
-      while (dropsRef.current.length < normalizedDensity) {
-        dropsRef.current.push({
-          x: Math.random() * getWidth(),
-          y: -10,
-          speed: 1.5 + Math.random() * 3,
-          opacity: 0.3 + Math.random() * 0.5,
-          length: 4 + Math.random() * 8,
-        });
-      }
-      while (dropsRef.current.length > normalizedDensity) {
-        dropsRef.current.pop();
+        // Keep if still visible
+        if (p.y < h + p.len) next.push(p);
       }
 
-      animationRef.current = requestAnimationFrame(animate);
+      // 👉 Cap max particles to avoid memory/perf issues
+      // Older particles are dropped first if too many
+      const MAX_PARTICLES = 180;
+      particlesRef.current = next.slice(-MAX_PARTICLES);
+
+      rafRef.current = requestAnimationFrame(step);
     };
 
-    animate();
+    rafRef.current = requestAnimationFrame(step);
 
     return () => {
       window.removeEventListener("resize", resize);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      particlesRef.current = [];
+      lastTsRef.current = 0;
+      spawnAccRef.current = 0;
     };
-  }, [normalizedDensity, color, height]);
+  }, [height, rate, spawnModel, COLORS]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="graph graph--rain"
+      className="graph graph--particles"
       style={{ height }}
     />
   );
