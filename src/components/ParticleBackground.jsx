@@ -75,10 +75,5 @@ export const ParticleBackground = () => {
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="particle-background"
-    />
-  );
+  return <canvas ref={canvasRef} className="particle-background" />;
 };

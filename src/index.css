@@ -3,16 +3,15 @@
  *************************************************/
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-   font-family: "Montserrat", sans-serif;
-   color:#d1d5db;
+  font-family: "Montserrat", sans-serif;
+  color: #d1d5db;
 }
-
 
 /* 
 
@@ -29,11 +28,10 @@ grey: #808797;
 _________________
 */
 
-
 .main-page {
   position: relative;
   min-height: 100vh;
-  background: #0E1115;
+  background: #0e1115;
   color: #f9fafb;
   overflow: hidden;
 }
@@ -59,16 +57,15 @@ _________________
   /* background-color: aquamarine; */
 }
 
-
 /* reusable txt */
-h3{
-    font-size: 2rem;
-    /* font-family: "Montserrat Alternates", sans-serif; */
+h3 {
+  font-size: 2rem;
+  /* font-family: "Montserrat Alternates", sans-serif; */
 }
 
-h4{
-    font-size: 1rem;
-    font-weight: 300;
-    margin-top: 8px;
-    color: #808797
+h4 {
+  font-size: 1rem;
+  font-weight: 300;
+  margin-top: 8px;
+  color: #808797;
 }

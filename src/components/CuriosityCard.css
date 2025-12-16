@@ -1,43 +1,43 @@
 /* card */
-.curiosities-card-container{
-    width: 364px;
-    height: 248px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 16px;
-    cursor: pointer;
-        display: flex;
-    flex-direction: column;
+.curiosities-card-container {
+  width: 364px;
+  height: 248px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
-.main-info{
-    display: flex;
-    column-gap: 8px;
-    height: 76px;
+.main-info {
+  display: flex;
+  column-gap: 8px;
+  height: 76px;
 }
 
 /* icon */
-.cc-icon{
-    font-size: 1.7rem;
+.cc-icon {
+  font-size: 1.7rem;
 }
 
 /* title */
-.cc-title{
-    font-size: 1.1rem;
-    font-weight: 500;
+.cc-title {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 /* description */
-.cc-description{
-    font-size: 1rem;
-    height: 38px;
-    color:  #808797;
+.cc-description {
+  font-size: 1rem;
+  height: 38px;
+  color: #808797;
 }
 
 /* numbers */
-.cc-total{
-    height: 50px;
-    color:  #808797;
+.cc-total {
+  height: 50px;
+  color: #808797;
 
   display: flex;
   align-items: baseline;
@@ -48,11 +48,11 @@
 }
 
 /* orange txt */
-.txt-orange{
-    color: #F6A823;
-    text-shadow: 0 0 2px rgba(246, 168, 35, 0.8), 0 0 10px rgba(246, 168, 35, 0.5);
-    font-size: 1.5rem;
-    font-weight: 700;
+.txt-orange {
+  color: #f6a823;
+  text-shadow: 0 0 2px rgba(246, 168, 35, 0.8), 0 0 10px rgba(246, 168, 35, 0.5);
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .cc-number {
@@ -78,17 +78,16 @@
   margin-right: 4px;
 }
 
-
 /* RATE PER SECOND  +XX/sec */
-.rate-per-second{
-    font-size: 0.8rem;
-    padding-top: 6px;
+.rate-per-second {
+  font-size: 0.8rem;
+  padding-top: 6px;
 }
 
 /*********** graph ***********/
-.graph{
-    width: 100%;
-    height: 50px;
-    margin-top: 12px;
-    border-radius: 8px;
+.graph {
+  width: 100%;
+  height: 50px;
+  margin-top: 12px;
+  border-radius: 8px;
 }

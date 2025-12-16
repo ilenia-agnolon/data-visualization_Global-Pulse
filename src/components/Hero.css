@@ -1,9 +1,9 @@
 .hero-container {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
 }
 /**************************** language toggle ****************************/
 .hero-lang-toggle {
@@ -29,44 +29,39 @@
   border-color: #f6a823;
 }
 
-
 /**************************** TITLES ****************************/
 /* white title */
 .white-txt {
-    color: white;
-    text-shadow: 
-    0 0 8px rgba(255, 255, 255, 0.6),
+  color: white;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6),
     0 0 16px rgba(255, 255, 255, 0.4);
-    font-size: 4rem;
-    /* font-family: "Montserrat Alternates", sans-serif; */
+  font-size: 4rem;
+  /* font-family: "Montserrat Alternates", sans-serif; */
 }
 
 /* orange title */
 .orange-txt {
-    color: #F6A823;
-     text-shadow:
-    0 0 10px rgba(246, 168, 35, 0.8),
-    0 0 20px rgba(246, 168, 35, 0.5),
-    0 0 30px rgba(246, 168, 35, 0.3);
-    font-size: 4rem;
-    /* font-family: "Montserrat Alternates", sans-serif; */
+  color: #f6a823;
+  text-shadow: 0 0 10px rgba(246, 168, 35, 0.8),
+    0 0 20px rgba(246, 168, 35, 0.5), 0 0 30px rgba(246, 168, 35, 0.3);
+  font-size: 4rem;
+  /* font-family: "Montserrat Alternates", sans-serif; */
 }
 
 /* subtitle */
-.hero-subtitle{
-    color: #808797;
-    font-weight: 300;
-    font-size: 1.2rem;
+.hero-subtitle {
+  color: #808797;
+  font-weight: 300;
+  font-size: 1.2rem;
 }
 
 /* txt "LIVE DATA" */
-.hero-live-label{
-    margin: 56px 0;
-    font-weight: 200;
-    font-size: 1rem;
-    color: #d1d5db;
+.hero-live-label {
+  margin: 56px 0;
+  font-weight: 200;
+  font-size: 1rem;
+  color: #d1d5db;
 }
-
 
 /* row with dot + text LIVE DATA */
 .hero-live-row {
@@ -76,7 +71,7 @@
   gap: 8px;
   font-size: 12px;
   letter-spacing: 0.35em;
-  text-transform: uppercase;  
+  text-transform: uppercase;
 }
 
 /**************************** live dot /****************************/
@@ -84,11 +79,10 @@
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background-color: #F6A823;
+  background-color: #f6a823;
   box-shadow: 0 0 10px rgba(246, 168, 35, 0.9);
   animation: hero-pulse 1.6s infinite ease-in-out;
 }
-
 
 @keyframes hero-pulse {
   0% {

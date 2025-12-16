@@ -7,14 +7,14 @@ import { ExploreCategories } from "../components/ExploreCategories";
 import { CuriositiesSection } from "../components/CuriositiesSection";
 
 //css
-import "./MainPage.css"
+import "./MainPage.css";
 
 export function MainPage() {
   const [activeCategoryId, setActiveCategoryId] = useState(null);
 
   return (
     <div className="main-page">
-        {/* BACKGROUND */}
+      {/* BACKGROUND */}
       <ParticleBackground />
 
       <div className="page-content">
@@ -24,12 +24,14 @@ export function MainPage() {
         {/* CATEGORIES SECTION */}
         <ExploreCategories
           activeCategoryId={activeCategoryId}
-          onCategoryChange={setActiveCategoryId}/>
+          onCategoryChange={setActiveCategoryId}
+        />
 
         {/* CURIOSITIES SECTION */}
         <CuriositiesSection
-        activeCategoryId={activeCategoryId}
-        onClearCategory={() => setActiveCategoryId(null)}/>
+          activeCategoryId={activeCategoryId}
+          onClearCategory={() => setActiveCategoryId(null)}
+        />
       </div>
     </div>
   );

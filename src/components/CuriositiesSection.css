@@ -1,34 +1,56 @@
 .curiosities-container {
-    margin-top: 80px;
+  margin-top: 80px;
 }
 
 /* row */
 .curiosities-row {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 24px;
-    column-gap: 46px;    
-    margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 32px;
+  margin-top: 24px;
 }
 
 /* header */
 .curiosities-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 /* ----------- BUTTON SHOW ALL ----------- */
 button.show-all-button {
-    background-color: transparent;
-    color: #F6A823;
-    border: transparent;
-    font-size: 1.2rem;
-    font-family: "Montserrat", sans-serif;
-    cursor: pointer;
+  background-color: transparent;
+  color: #f6a823;
+  border: transparent;
+  font-size: 1.2rem;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
 }
 
-button.show-all-button:hover{
-    text-shadow: 0 0 2px rgba(246, 168, 35, 0.8), 0 0 10px rgba(246, 168, 35, 0.5);
-    cursor: pointer;
+button.show-all-button:hover {
+  text-shadow: 0 0 2px rgba(246, 168, 35, 0.8), 0 0 10px rgba(246, 168, 35, 0.5);
+  cursor: pointer;
+}
+
+/* ----------- back to categories button ----------- */
+.back-to-categories-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 24px 0;
+}
+
+button.back-to-categories-button {
+  background-color: transparent;
+  color: #f6a823;
+  border: none;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+button.back-to-categories-button:hover {
+  opacity: 1;
+  text-shadow: 0 0 2px rgba(246, 168, 35, 0.8), 0 0 10px rgba(246, 168, 35, 0.5);
 }

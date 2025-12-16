@@ -1,8 +1,8 @@
 // components
-import { RainVisualization } from "./RainVisualization";
+import { DotPulseVisualization } from "./DotPulseVisualization";
 
 //css
-import "./CuriosityCard.css"
+import "./CuriosityCard.css";
 
 //compact formatter that returns { numberPart, suffixPart } safely
 // It avoids long "italian compact" strings breaking the UI and forces max 2 decimals.
@@ -34,17 +34,8 @@ function formatCompactParts(value, lang) {
   return { numberPart: trimmed, suffixPart: "" };
 }
 
-
-export function CuriosityCard ({ item, lang, secondsToday }) {
-
-  const {
-    emoji,
-    sectionEmoji,
-    title,
-    description,
-    ratePerSecond,
-    unit,
-  } = item;
+export function CuriosityCard({ item, lang, secondsToday }) {
+  const { emoji, sectionEmoji, title, description, ratePerSecond, unit } = item;
 
   //estimated total “today”
   const totalToday = ratePerSecond * secondsToday * 3;
@@ -65,40 +56,43 @@ export function CuriosityCard ({ item, lang, secondsToday }) {
   );
   const rateCompact = `${rateNumber}${rateSuffix ? ` ${rateSuffix}` : ""}`;
 
-
   return (
     <>
-     {/* ------- CARD ------- */}
-        <div className="curiosities-card-container">
-
+      {/* ------- CARD ------- */}
+      <div className="curiosities-card-container">
         <div className="main-info">
-            {/* ICON */}
-            <div className="cc-icon">{emoji || sectionEmoji}</div>
-            {/* TITLE */}
-            <div className="box-title-and-descrp">
-              <h5 className="cc-title">{title[lang]}</h5>
-              <p className="cc-description">{description[lang]}</p>
-            </div>
+          {/* ICON */}
+          <div className="cc-icon">{emoji || sectionEmoji}</div>
+          {/* TITLE */}
+          <div className="box-title-and-descrp">
+            <h5 className="cc-title">{title[lang]}</h5>
+            <p className="cc-description">{description[lang]}</p>
+          </div>
         </div>
 
-          {/* DATA */}
-          <p className="cc-total">
-
-            {/* orange number */}
-            <span className="txt-orange cc-number">{numberPart}</span>
-            <span className="cc-unit">
-              {suffixPart && <span className="cc-total-suffix">{suffixPart}</span>}{" "}{mainUnitLabel}</span>
-            
-          </p>
-          {/* RATE PER SECOND  +XX/sec */}
-          <p className="rate-per-second">{lang === "it"
+        {/* DATA */}
+        <p className="cc-total">
+          {/* orange number */}
+          <span className="txt-orange cc-number">{numberPart}</span>
+          <span className="cc-unit">
+            {suffixPart && (
+              <span className="cc-total-suffix">{suffixPart}</span>
+            )}{" "}
+            {mainUnitLabel}
+          </span>
+        </p>
+        {/* RATE PER SECOND  +XX/sec */}
+        <p className="rate-per-second">
+          {lang === "it"
             ? `+${rateCompact} ${unit.it}`
-            : `+${rateCompact} ${unit.en}`}</p>
+            : `+${rateCompact} ${unit.en}`}
+        </p>
 
-          {/* GRAPH PLACEHOLDER  */}
-          <div className="graph"><RainVisualization rate={ratePerSecond} /></div>
-         
+        {/* GRAPH PLACEHOLDER  */}
+        <div className="graph">
+          <DotPulseVisualization rate={ratePerSecond} theme={item.sectionId} />
         </div>
+      </div>
     </>
   );
 }
