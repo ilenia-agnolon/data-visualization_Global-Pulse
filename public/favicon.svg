@@ -1,0 +1,6 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- alone glow -->
+  <circle cx="32" cy="32" r="22" fill="#ffb33e" fill-opacity="0.25"></circle>
+  <!-- pallino centrale -->
+  <circle cx="32" cy="32" r="12" fill="#ffb33e"></circle>
+</svg>
