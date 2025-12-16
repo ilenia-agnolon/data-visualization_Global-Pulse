@@ -1,3 +1,7 @@
+.explore-cat-container {
+    margin-top: 80px;
+}
+
 /* row */
 .cat-row {
     display: flex;

@@ -1,3 +1,7 @@
+.curiosities-container {
+    margin-top: 80px;
+}
+
 /* row */
 .curiosities-row {
     display: flex;
@@ -5,4 +9,26 @@
     row-gap: 24px;
     column-gap: 46px;    
     margin-top: 24px;
+}
+
+/* header */
+.curiosities-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* ----------- BUTTON SHOW ALL ----------- */
+button.show-all-button {
+    background-color: transparent;
+    color: #F6A823;
+    border: transparent;
+    font-size: 1.2rem;
+    font-family: "Montserrat", sans-serif;
+    cursor: pointer;
+}
+
+button.show-all-button:hover{
+    text-shadow: 0 0 2px rgba(246, 168, 35, 0.8), 0 0 10px rgba(246, 168, 35, 0.5);
+    cursor: pointer;
 }

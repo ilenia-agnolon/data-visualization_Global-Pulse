@@ -2,10 +2,23 @@
 .cat-card{
     width: 208px;
     height: 180px;
-    background-color: #16191F;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    padding: 16px;
+    padding: 14px;
     cursor: pointer;
+}
+
+/* ------------ HOVER ------------ */
+.cat-card:hover {
+    border: 1px solid #ffb449;
+    box-shadow: 0 0 18px rgba(255, 180, 73, 0.4);
+}
+
+/* ------------ ACTIVE STATE ------------ */
+.category-card--active{
+    background: rgba(255, 180, 73, 0.15);
+    border: 1.5px solid #ffb449;
+    box-shadow: 0 0 22px rgba(255, 180, 73, 0.55);
 }
 
 .icon-and-counter-box{
