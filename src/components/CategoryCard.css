@@ -1,6 +1,6 @@
 /* card */
 .cat-card{
-    width: 208px;
+    width: 216px;
     height: 180px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
@@ -29,7 +29,8 @@
 
 /* title */
 .cat-title{
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
     height: 56px;
 }
 

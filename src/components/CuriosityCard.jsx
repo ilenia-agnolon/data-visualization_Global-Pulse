@@ -1,14 +1,39 @@
+// components
+import { RainVisualization } from "./RainVisualization";
+
 //css
 import "./CuriosityCard.css"
 
-//compact number: 1.2K, 5.6M, 3.4B
-function formatCompactNumber(value, lang) {
+//compact formatter that returns { numberPart, suffixPart } safely
+// It avoids long "italian compact" strings breaking the UI and forces max 2 decimals.
+function formatCompactParts(value, lang) {
   const locale = lang === "it" ? "it-IT" : "en-US";
-  return new Intl.NumberFormat(locale, {
+
+  // Compact number with max 2 decimals
+  const formatted = new Intl.NumberFormat(locale, {
     notation: "compact",
+    compactDisplay: "short",
     maximumFractionDigits: 2,
   }).format(value);
+
+  const trimmed = formatted.trim();
+
+  // Case 1: glued suffix (e.g. "103.32B")
+  const gluedMatch = trimmed.match(/^([\d.,]+)([A-Za-z]+)$/);
+  if (gluedMatch) {
+    return { numberPart: gluedMatch[1], suffixPart: gluedMatch[2] };
+  }
+
+  // Case 2: space-separated suffix (e.g. "103,32 Bln")
+  const parts = trimmed.split(/\s+/);
+  if (parts.length === 2 && /[A-Za-z]/.test(parts[1])) {
+    return { numberPart: parts[0], suffixPart: parts[1] };
+  }
+
+  // Fallback: no suffix
+  return { numberPart: trimmed, suffixPart: "" };
 }
+
 
 export function CuriosityCard ({ item, lang, secondsToday }) {
 
@@ -21,32 +46,25 @@ export function CuriosityCard ({ item, lang, secondsToday }) {
     unit,
   } = item;
 
-  // numeric format
-  // const locale = lang === "it" ? "it-IT" : "en-US";
-
   //estimated total “today”
-  const totalToday = ratePerSecond * secondsToday;
+  const totalToday = ratePerSecond * secondsToday * 3;
 
-  const mainValueCompact = formatCompactNumber(totalToday, lang);
+  //safe split number + suffix with max 2 decimals
+  const { numberPart, suffixPart } = formatCompactParts(totalToday, lang);
 
-  //split between number and letter (eg: "395.9Bln" → "395.9" + "Bln")
-  let numberPart = mainValueCompact;
-  let suffixPart = "";
-
-  const match = mainValueCompact.match(/^([\d.,]+)\s*([A-Za-z]+)?$/);
-  if (match) {
-    numberPart = match[1];         // eg. "274.2"
-    suffixPart = match[2] || "";   // eg. "T"
-  }
-
-  //unit for the total
+  // unit for the total
   const rawUnit = lang === "it" ? unit.it : unit.en;
   const mainUnitLabel = rawUnit.includes("/sec")
     ? rawUnit.replace("/sec", "")
     : rawUnit;
 
-  //per-second increment (in compact format)
-  const rateCompact = formatCompactNumber(ratePerSecond, lang);
+  // per-second increment (compact, max 2 decimals)
+  const { numberPart: rateNumber, suffixPart: rateSuffix } = formatCompactParts(
+    ratePerSecond,
+    lang
+  );
+  const rateCompact = `${rateNumber}${rateSuffix ? ` ${rateSuffix}` : ""}`;
+
 
   return (
     <>
@@ -78,7 +96,7 @@ export function CuriosityCard ({ item, lang, secondsToday }) {
             : `+${rateCompact} ${unit.en}`}</p>
 
           {/* GRAPH PLACEHOLDER  */}
-          <div className="graph"></div>
+          <div className="graph"><RainVisualization rate={ratePerSecond} /></div>
          
         </div>
     </>
