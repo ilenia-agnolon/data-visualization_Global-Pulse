@@ -53,9 +53,13 @@ export function CuriositiesSection({ activeCategoryId, onClearCategory }) {
     return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   });
 
+  //seconds since when you open the page
+  const [secondsSinceOpen, setSecondsSinceOpen] = useState(0);
+
   useEffect(() => {
     const id = setInterval(() => {
       setSecondsToday((prev) => prev + 1);
+      setSecondsSinceOpen((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(id);
@@ -98,6 +102,7 @@ export function CuriositiesSection({ activeCategoryId, onClearCategory }) {
             item={item}
             lang={lang}
             secondsToday={secondsToday}
+            secondsSinceOpen={secondsSinceOpen}
           />
         ))}
       </div>

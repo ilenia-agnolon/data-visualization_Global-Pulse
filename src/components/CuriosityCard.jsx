@@ -38,7 +38,7 @@ export function CuriosityCard({ item, lang, secondsToday }) {
   const { emoji, sectionEmoji, title, description, ratePerSecond, unit } = item;
 
   //estimated total “today”
-  const totalToday = ratePerSecond * secondsToday * 3;
+  const totalToday = ratePerSecond * secondsToday;
 
   //safe split number + suffix with max 2 decimals
   const { numberPart, suffixPart } = formatCompactParts(totalToday, lang);

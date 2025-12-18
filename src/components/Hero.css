@@ -108,7 +108,6 @@
 
 /* ************************ SOURCES ************************ */
 .hero-data-notes {
-  max-width: 720px;
   margin-inline: auto;
 }
 
@@ -120,8 +119,30 @@
 
 .hero-data-notes-text {
   font-size: 1rem;
+  line-height: 1.6;
   color: #c2c9d7;
   margin-bottom: 18px;
+  margin-inline: auto;
+  flex-shrink: 0;
+}
+
+.hero-note-line {
+  display: block;
+}
+
+/* live hour (HH:MM:SS) */
+.hero-live-time {
+  color: rgba(246, 168, 35, 0.6);
+  font-weight: 500;
+  font-size: 1.04em;
+  font-family: "Montserrat";
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  transition: opacity 0.2s linear;
+}
+
+#seconds {
+  color: rgba(255, 245, 225, 0.8);
 }
 
 .hero-data-sources {
@@ -129,7 +150,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .hero-source-link {

@@ -6,7 +6,7 @@
 .curiosities-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  column-gap: 32px;
   row-gap: 32px;
   margin-top: 24px;
 }
